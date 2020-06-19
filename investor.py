@@ -206,6 +206,7 @@ class InvestorPopulation:
             print("  Mutation rate: %.2f%%" % (100*self._mutation_rate()))
             print("  Reproducing... ", end="")
             self.reproduction1(fitness)
+            self.random_death()
             print("done! >")
 
             # ETA
@@ -221,8 +222,7 @@ class InvestorPopulation:
         """ Reward-based selection. """
         p = np.array([2**i for i in range(len(fitness))])
         p = p/p.sum()    # probabilistic distribution
-        print("\nProb. distribution: " + str(p))
-        new_investors = [self._investors[ fitness[-1][0] ]]   # always keeps the best individual
+        new_investors = [ self._investors[ fitness[-1][0] ] ]   # always keeps the best individual
 
         for _ in range(len(fitness) - 1):
             choice = fitness[np.random.choice(len(fitness), p=p)]
@@ -240,6 +240,15 @@ class InvestorPopulation:
             current_inv = self._investors[i[0]]
             new_weights = mate_weights(best.brain.get_weights(), current_inv.brain.get_weights(), self._mutation_rate())
             new_investors.append(Investor(self._initial_cash, self._prev_days, weights=new_weights))
+
+    def random_death(self):
+        """ Randomly kills one individual of the population, replacing it with a randomly generated one.
+
+        The best individual won't considered for removal. It must be located at index 0 of "self._investors".
+        """
+        i = np.random.randint(1, len(self._investors))
+        del self._investors[i]
+        self._investors.append(Investor(self._initial_cash, self._prev_days))
 
     def evaluate(self, prices, num_plots):
         """ Evaluates the population performance. """
