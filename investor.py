@@ -9,37 +9,35 @@ import tensorflow as tf
 import numpy as np
 import numpy.random as rand
 import time
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
 
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-MIN_MUTATION_RATE = 0.05
-MAX_MUTATION_RATE = 0.5
-WEIGHTS_MULT_FACTOR = 200
+################## CONFIG ##################
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'   # turn off TensorFlow's logs
+MIN_MUTATION_RATE = 0.05                   # minimum mutation rate for the genetic algorithm
+MAX_MUTATION_RATE = 0.5                    # maximum mutation rate for the genetic algorithm
+WEIGHTS_MULT_FACTOR = 200                  # factor that multiplies the weights of a newly created neural network
+############################################
 
 
 class Investor:
-    """ Represents an investor, defining its structure and behaviour.
+    """ Defines the general structure and behaviour of an automated intelligent investor.
 
     Attributes:
-        _cash: todo
-        _stocks: todo
-        _avg_price: todo
-        _prev_days: todo
-        brain: todo
+        _cash: the investor's current amount of free cash.
+        _stocks: number of stocks the investor currently has.
+        _avg_price: the average price the investor paid for the stocks.
+        brain: the neural network that dictates the investor's actions.
     """
 
     def __init__(self, initial_cash, prev_days, weights=None):
         """ Standard constructor for an instance of Investor.
 
         :param initial_cash: initial amount of cash the investor will have available.
-        :param prev_days:
-        :param weights:
+        :param prev_days: number of previous days of stock prices the investor will take into account.
+        :param weights: initial weights of the investor's neural network. If None, new random weights are created.
         """
         self._cash = initial_cash
         self._stocks = self._avg_price = 0
-        self._prev_days = prev_days
         self.brain = tf.keras.Sequential([
                 tf.keras.layers.Dense(64, activation='relu', input_shape=[4 + prev_days]),
                 tf.keras.layers.Dense(64, activation='relu'),
@@ -55,16 +53,11 @@ class Investor:
         self.brain.set_weights([w * WEIGHTS_MULT_FACTOR for w in self.brain.get_weights()])
 
     def fitness(self, price):
-        """ Returns the current net worth of the investor.
-        """
+        """ Returns the current net worth of the investor. """
         return self._cash + self._stocks * price
 
     def operate(self, features):
-        """ Simulates investments using the given data.
-
-        :param features:
-        :return:
-        """
+        """ Simulates investments using the given data. Returns the name of the action taken by the investor."""
         features[0][0] = self._cash
         features[0][1] = self._stocks
         features[0][2] = self._avg_price
@@ -78,35 +71,30 @@ class Investor:
             self._avg_price = (self._avg_price * self._stocks + h * price_now) / (self._stocks + h)
             self._stocks += h
             self._cash -= h * price_now
+            return "BUY", h
+
         # sell
-        elif h < 0:
+        if h < 0:
             h = self._stocks if abs(h) > self._stocks else abs(h)
             self._stocks -= h
             self._avg_price = 0 if self._stocks == 0 else self._avg_price
             self._cash += h * price_now
+            return "SELL", h
+
+        # no action
+        return "NA", 0
 
     def reset_net_worth(self, initial_cash):
-        """
-
-        :return:
-        """
+        """ Resets the investor's net worth and sets its cash to the specified amount. """
         self._cash = initial_cash
         self._stocks = self._avg_price = 0
 
     def save_brain(self, out_pathname):
-        """
-
-        :param out_pathname:
-        :return:
-        """
+        """ Saves the investor's neural network to disk. """
         self.brain.save(out_pathname)
 
     def load_brain(self, in_pathname):
-        """
-
-        :param in_pathname:
-        :return:
-        """
+        """ Loads the investor's neural network from disk. """
         self.brain = tf.keras.models.load_model(in_pathname, compile=False)
 
 
@@ -116,16 +104,18 @@ class InvestorPopulation:
     This class is used to manage a population of investors, dealing with fitness evaluation, reproduction, etc.
 
     Attributes:
-        _initial_cash: todo
+        _initial_cash: initial amount of cash of each of the population's member.
+        _prev_days: number of previous days of stock prices the investors will take into account.
+        _investors: a list with Investor objects.
     """
 
     def __init__(self, in_dir=None, pop_size=None, initial_cash=None, prev_days=None):
         """ Standard constructor for a population of investors.
 
-        :param in_dir:
+        :param in_dir: input directory from which the population will be loaded. If None, a new population is generated.
         :param pop_size: size of the population.
-        :param initial_cash: the amount of cash each investor will have at the beginning of a new generation.
-        :param prev_days:
+        :param initial_cash: initial amount of cash each investor will have at the beginning of a new generation.
+        :param prev_days: number of previous days of stock prices the investors will take into account.
         """
         self._fitness_history = []
 
@@ -150,8 +140,17 @@ class InvestorPopulation:
         """ Returns the size of the population. """
         return len(self._investors)
 
+    @property
+    def prev_days(self):
+        """ Returns the number of previous days of stock prices the investors are taking into account."""
+        return self._prev_days
+
     def _mutation_rate(self):
-        """ Calculates the mutation rate. """
+        """ Calculates the mutation rate.
+
+        The mutation rate is higher when the population hasn't been improving its fitness much in the past few
+        generations and lower when the population has been improving.
+        """
         m = np.mean( self._fitness_history[-6:-1] if len(self._fitness_history) > 5 else self._fitness_history )
         delta = self._fitness_history[-1] - m
 
@@ -159,11 +158,13 @@ class InvestorPopulation:
         return max(MIN_MUTATION_RATE, MAX_MUTATION_RATE * sig)
 
     def evolve(self, generations, prices):
-        """ Starts the simulation.
+        """ Starts the evolutionary process.
 
-        :param generations:
-        :param prices:
-        :return:
+        Uses a genetic algorithm. By the end of the process, the population fitness is expected to have been improved.
+
+        :param generations: number of generations of the process.
+        :param prices: stock price history.
+        :return: the best individual.
         """
         features = _generate_features(prices, self._prev_days)
         fitness = None
@@ -205,8 +206,8 @@ class InvestorPopulation:
             # reproducing
             print("  Mutation rate: %.2f%%" % (100*self._mutation_rate()))
             print("  Reproducing... ", end="")
-            self.reproduction1(fitness)
-            self.random_death()
+            self._reward_based_reproduction(fitness)
+            self._random_death()
             print("done! >")
 
             # ETA
@@ -218,8 +219,8 @@ class InvestorPopulation:
 
         return self._investors[fitness[-1][0]]  # returning the best investor
 
-    def reproduction1(self, fitness):
-        """ Reward-based selection. """
+    def _reward_based_reproduction(self, fitness):
+        """ Reproduction method: reward-based selection. """
         p = np.array([2**i for i in range(len(fitness))])
         p = p/p.sum()    # probabilistic distribution
         new_investors = [ self._investors[ fitness[-1][0] ] ]   # always keeps the best individual
@@ -227,12 +228,13 @@ class InvestorPopulation:
         for _ in range(len(fitness) - 1):
             choice = fitness[np.random.choice(len(fitness), p=p)]
             parent_w = self._investors[choice[0]].brain.get_weights()
-            new_investors.append(Investor(self._initial_cash, self._prev_days, weights=mutate_weights(parent_w, self._mutation_rate())))
+            new_investors.append(Investor(self._initial_cash, self._prev_days,
+                                          weights=mutate_weights(parent_w, self._mutation_rate())))
 
         self._investors = new_investors
 
-    def reproduction2(self, fitness):
-        """ Elitism. """
+    def _elitist_reproduction(self, fitness):
+        """ Reproduction method: elitism. """
         best = self._investors[fitness[-1][0]]
         new_investors = [best]  # always keeps the best individual
 
@@ -241,17 +243,22 @@ class InvestorPopulation:
             new_weights = mate_weights(best.brain.get_weights(), current_inv.brain.get_weights(), self._mutation_rate())
             new_investors.append(Investor(self._initial_cash, self._prev_days, weights=new_weights))
 
-    def random_death(self):
-        """ Randomly kills one individual of the population, replacing it with a randomly generated one.
+    def _random_death(self):
+        """ Randomly kills one of the population's individuals, replacing it with a randomly generated one.
 
-        The best individual won't considered for removal. It must be located at index 0 of "self._investors".
+        The best individual won't be considered for removal. It must be located at the index 0 of "self._investors".
         """
         i = np.random.randint(1, len(self._investors))
         del self._investors[i]
         self._investors.append(Investor(self._initial_cash, self._prev_days))
 
-    def evaluate(self, prices, num_plots):
-        """ Evaluates the population performance. """
+    def evaluate(self, prices):
+        """ Evaluates the population performance.
+
+        :param prices: stock price history.
+        :return: a tuple containing, respectively, a list (sorted from best to worst) with the population's investors
+        performance over time and a list with the IBOVESPA performance over the time.
+        """
         features = _generate_features(prices, self._prev_days)
         initial_price = features[0][0][3]
 
@@ -261,36 +268,18 @@ class InvestorPopulation:
 
         # simulating investments
         ibov_var = []
-        investors_var = [[] for _ in range(len(self._investors))]
+        investors_info = [([], []) for _ in range(len(self._investors))]   # index 0: net worth var; index 1: actions
 
         for f in features:
             current_price = f[0][3]
             ibov_var.append(100 * (current_price - initial_price) / initial_price)
             for n, investor in enumerate(self._investors):
-                investor.operate(f)
-                investors_var[n].append( 100*(investor.fitness(current_price) - self._initial_cash) / self._initial_cash )
+                investors_info[n][1].append( investor.operate(f) )
+                investors_info[n][0].append(
+                        100 * ( investor.fitness(current_price) - self._initial_cash ) / self._initial_cash
+                )
 
-        # select the n best investors
-        best_var = sorted(investors_var, key=lambda e: e[-1], reverse=True)[:num_plots]
-
-        # plot
-        interval = range(len(features))
-        ax = plt.subplot()
-        plt.plot(interval, ibov_var, "y")
-        plt.plot(interval, best_var[0], "r")
-
-        for i in best_var[1:]:
-            plt.plot(interval, i)
-
-        for line in ax.lines:
-            y = line.get_ydata()[-1]
-            ax.annotate('%0.2f%%' % y, xy=(1, y), xytext=(8, 0), color=line.get_color(),
-                        xycoords=('axes fraction', 'data'), textcoords='offset points', weight="bold")
-
-        plt.legend(['IBOV'] + ["Investor %d" % (i+1) for i in range(len(best_var))], loc='upper left')
-        plt.xlabel("Time (days)")
-        plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.1f%%'))
-        plt.show()
+        return sorted(investors_info, key=lambda e: e[0][-1], reverse=True), ibov_var
 
     def save(self, out_dir):
         """ Saves the entire population to the given pathname. """
@@ -306,28 +295,29 @@ class InvestorPopulation:
 def mutate_weights(weights, rate):
     """ Returns a mutated copy of the given set of weights.
 
-    :param weights:
-    :param rate:
-    :return:
+    :param weights: the weights of a neural network.
+    :param rate: the mutation rate.
+    :return: a mutated copy of the set of weights.
     """
     mul = [rand.uniform(low=(1-rate), high=(1+rate), size=w.shape) for w in weights]
     return [a * b for a, b in zip(weights, mul)]
 
 
 def mate_weights(weights1, weights2, mutation_rate):
-    """
+    """ Sums each weight of one set with the corresponding weight of the other set. The result is divided by 2 and the
+    mutation rate is applied.
 
-    :param weights1:
-    :param weights2:
-    :param mutation_rate:
-    :return:
+    :param weights1: the first set of weights.
+    :param weights2: the second set of weights.
+    :param mutation_rate: the mutation rate.
+    :return: the resultant set of weights.
     """
     n = [(w1 + w2)/2 for w1, w2 in zip(weights1, weights2)]
     return mutate_weights(n, mutation_rate)
 
 
 def _generate_features(prices, prev_days):
-    """ Generates a set of features. """
+    """ Generates a set of features from the given stock price history. """
     features = []
     day = prev_days
     for p in prices[prev_days:]:
