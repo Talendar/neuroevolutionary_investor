@@ -36,6 +36,9 @@ def static_plot(best_investors, ibov_var):
 def dynamic_plot(investor_history, ibov_var, print_ops):
     """ Dynamically plots, over time, the performance of IBOVESPA and on investor.
 
+    todo: PLOTTING IS GETTING SLOWER AS MANY ANNOTATIONS ARE BEING DISPLYED; SOLVE IT!
+    todo: limit the number of annotations displayed; maybe don't display annotations for every operation.
+
     :param investor_history: performance history of the investor.
     :param ibov_var: price history of IBOVESPA.
     :param print_ops: if True, the investor's decisions (buy and sell operations) will be plot.
