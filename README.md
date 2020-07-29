@@ -50,7 +50,7 @@ The investor can take only one action in each trading day, during its end. In or
    * the average price paid by the investor for his shares;
    * the closing price of the "IBOVESPA shares" for the past *d* days, where *d* is a predefined number.
 
-The main component of each investor is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. The ANN takes, as input, a vector with the information above. It outputs a real number *h*. The program rounds *h* to the nearest integer and interprets it as follows:
+The main component of each investor is his "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. The ANN takes, as input, a vector with the information above. It outputs a real number *h*. The program rounds *h* to the nearest integer and interprets it as follows:
 
    * *h > 0*: action to buy *h* shares of IBOVESPA;
    * *h = 0*: no action;
@@ -58,7 +58,9 @@ The main component of each investor is its "brain". We give that name to the _**
 
 
 ## Evolving neural networks
-to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
+The process of generating neural networks with evolutionary algorithms (a genetic algorithm, in this project's case) is called _**neuroevolution**_ (hence the name of the project).
+
+to_do: weights and biases of the networks
 
 
 ## Reproduction
