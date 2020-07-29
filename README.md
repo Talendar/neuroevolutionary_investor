@@ -30,15 +30,27 @@ To improve itself, the system uses concepts of **evolutionary computing**. Speci
     * Discard the old population and restart the loop considering the new population.
 
 
+## Trading shares of IBOVESPA
+During the investment simulations, the investors are provided, for each trading day of the considered period, with historic data of the *BOVESPA Index* (or IBOVESPA), benchmark index of about 60 stocks that are traded on the B3 (Brasil Bolsa Balcão), which account for the majority of trading and market capitalization in the Brazilian stock market. The database, obtained from the website https://br.investing.com/, contains the opening and closing number of points the IBOVESPA had in each trading session from December 27 of 2000 to June 15 of 2020.
+
+For the purposes of our simulations, the IBOVESPA is treated as an *exchange-traded fund* (ETF), i.e., an investment fund traded on stock exchanges, much like stocks. The price of each "IBOVESPA share" in a given instant is equal to the IBOVESPA divided by 100.
+
+
+## The investor
+The main component of each investor (an individual of the population, represented by the class *Investor*) is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. 
+
 to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
 
 to_do: actions the investor can take
 
-to_do: ibov data
 
+## Reproduction
 to_do: reward based selection vs elitism
 
 to_do: why randomly kill one individual? The problem of a bad starting point in the search space.
+
+to_do: a mutable mutation rate (the mutation rate gets higher when the population hasn't been changing much in the past few epochs).
+
 
 ## Results
 to_do: using different data to train and evaluate the system
