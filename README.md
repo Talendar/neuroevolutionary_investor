@@ -39,9 +39,9 @@ For the purposes of our simulations, the IBOVESPA is treated as an *exchange-tra
 ## The investor
 In each trading session, the investor (an individual of the population), represented by the class *Investor*, can decide to take one of the following actions:
 
-   * buy *x* IBOVESPA shares;
+   * **buy** *x* IBOVESPA shares;
    * do nothing;
-   * sell *y* IBOVESPA shares.
+   * **sell** *y* IBOVESPA shares.
    
 The investor can take only one action in each trading day, during its end. In order to make a decision, the investor is provided, in each trading session, with the following informations:
 
