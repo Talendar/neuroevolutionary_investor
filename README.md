@@ -29,15 +29,22 @@ To improve itself, the system uses concepts of **evolutionary computing**. Speci
     * Randomly generate a new individual and add it to the new population.
     * Discard the old population and restart the loop considering the new population.
 
+
 to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
+
 to_do: actions the investor can take
+
 to_do: ibov data
+
 to_do: reward based selection vs elitism
+
 to_do: why randomly kill one individual? The problem of a bad starting point in the search space.
 
 ## Results
 to_do: using different data to train and evaluate the system
+
 to_do: how did the investors handle crisis?
+
 to_do: general results
 
 <p align="center"> <img src="./Figure_1.png"width="1000" height="600"> </p> 
