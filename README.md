@@ -11,8 +11,10 @@ To run the program, use the command:
 
 
 ## How it works
-to do
+To improve itself, the system uses concepts of **evolutionary computing**. Specifically, a **genetic algorithm**, metaheuristic inspired by the process of natural selection, is used. The evolution process used by the program can be summarized in the following steps:
 
+    1 - Generate a population of *n* individuals; each individual represents an investor.
+    2 -
 
 ## Results
 to do
