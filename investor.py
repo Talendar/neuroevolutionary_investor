@@ -5,6 +5,8 @@
 
 
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # turning off tensor flow's logs
+
 import tensorflow as tf
 import numpy as np
 import numpy.random as rand
@@ -12,7 +14,6 @@ import time
 
 
 ################## CONFIG ##################
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'   # turn off TensorFlow's logs
 MIN_MUTATION_RATE = 0.05                   # minimum mutation rate for the genetic algorithm
 MAX_MUTATION_RATE = 0.5                    # maximum mutation rate for the genetic algorithm
 WEIGHTS_MULT_FACTOR = 200                  # factor that multiplies the weights of a newly created neural network
