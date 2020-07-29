@@ -23,7 +23,7 @@ To improve itself, the system uses concepts of **evolutionary computing**. Speci
         * Repeat *n - 1* times:
             * Consider a probabilistic distribution in which individuals with higher fitness are more likely to be selected.
             * Select one individual *i1* of the old population (without removing it).
-            * Create a new individual *i2* similar to *i1*, but with small differences (mutation).
+            * Create a new individual *i2* similar to *i1*, but with small, random differences (mutation).
             * Add *i2* to the new population.
     * Randomly select an individual (except for the one with the highest fitness) of the new population and kill it. 
     * Randomly generate a new individual and add it to the new population.
