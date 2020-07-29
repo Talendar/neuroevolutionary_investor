@@ -6,6 +6,7 @@ Neuroevolution-based system that simulates investments in the stock market, base
 ## Installation
 First, make sure you have a recent version of Python 3. To install the dependencies, open a command shell in the project's root directory and execute the following:
 - pip install -r requirements.txt
+
 To run the programa, use the command:
 - python3 main.py
 
