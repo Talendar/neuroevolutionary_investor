@@ -57,7 +57,7 @@ class Investor:
         return self._cash + self._stocks * price
 
     def operate(self, features):
-        """ Simulates investments using the given data. Returns the name of the action taken by the investor."""
+        """ Simulates investments using the given data. Returns the name of the action taken by the investor. """
         features[0][0] = self._cash
         features[0][1] = self._stocks
         features[0][2] = self._avg_price

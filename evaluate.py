@@ -1,4 +1,4 @@
-""" Auxiliary functions for displaying to the user the evaluation of a population of investors.
+""" Auxiliary functions for displaying the evaluation of a population of investors.
 
 @Author: Gabriel Nogueira (Talendar)
 """
@@ -33,15 +33,13 @@ def static_plot(best_investors, ibov_var):
     plt.show()
 
 
-def dynamic_plot(investor_history, ibov_var, print_ops):
+def dynamic_plot(investor_history, ibov_var, print_ops, max_num_ops=5):
     """ Dynamically plots, over time, the performance of IBOVESPA and on investor.
-
-    todo: PLOTTING IS GETTING SLOWER AS MANY ANNOTATIONS ARE BEING DISPLYED; SOLVE IT!
-    todo: limit the number of annotations displayed; maybe don't display annotations for every operation.
 
     :param investor_history: performance history of the investor.
     :param ibov_var: price history of IBOVESPA.
     :param print_ops: if True, the investor's decisions (buy and sell operations) will be plot.
+    :param max_num_ops: max number of operations to display on the screen at a time.
     """
     # init
     plt.ion()
@@ -77,6 +75,8 @@ def dynamic_plot(investor_history, ibov_var, print_ops):
     ydata_ibov = []
 
     pc_ann_inv = pc_ann_ibov = None
+    op_annotations = []
+
     for x in range(len(ibov_var)):
         # set data
         xdata.append(x)
@@ -110,9 +110,13 @@ def dynamic_plot(investor_history, ibov_var, print_ops):
         if print_ops and investor_history[1][x][1] != 0:
             color = "g" if investor_history[1][x][0] == "BUY" else "r"
             ax.plot([xdata[-1]], [ydata_inv[-1]], marker='o', markersize=5, color=color)
-            ax.annotate("%d" % investor_history[1][x][1],
-                        xy=(xdata[-1], ydata_inv[-1]), xytext=(xdata[-1] - 0.25, ydata_inv[-1] - 0.25),
-                        color=color, weight="bold", fontsize=8, arrowprops={"arrowstyle": "->"})
+            op_annotations.append(
+                ax.annotate("%d" % investor_history[1][x][1],
+                            xy=(xdata[-1], ydata_inv[-1]), xytext=(xdata[-1] - 0.25, ydata_inv[-1] - 0.25),
+                            color=color, weight="bold", fontsize=8, arrowprops={"arrowstyle": "->"}))
+
+            if len(op_annotations) > max_num_ops:
+                op_annotations.pop(0).remove()  # remove the oldest annotation
 
         # draw and delay
         plt.pause(pause_time)

@@ -14,7 +14,7 @@ from evaluate import *
 
 
 def format_csv():
-    """ Auxiliary function used to format the raw IBOVESPA data."""
+    """ Auxiliary function used to format the raw IBOVESPA data. """
     ibov = pd.read_csv("./data/ibov_dados_originais.csv", index_col=None, usecols=["Data", "Último", "Abertura"])
     ibov = ibov[::-1].reset_index(drop=True)
 
@@ -27,6 +27,7 @@ def format_csv():
 
 def train():
     """ Handles the training of an investor population (menu option 0). """
+
     # input
     print("\n\nInput file (csv at ./data): ", end="")
     in_file = input()
@@ -62,6 +63,7 @@ def train():
 
 def evaluate():
     """ Handles the evaluation of a trained investors population (menu option 1). """
+
     # base input
     print("\n\nIBOVESPA data file (csv at ./data): ", end="")
     in_file = input()
