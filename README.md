@@ -31,7 +31,7 @@ To improve itself, the system uses concepts of **evolutionary computing**. Speci
 
 
 ## Trading shares of IBOVESPA
-During the investment simulations, the investors are provided, for each trading day of the considered period, with historic data of the *BOVESPA Index* (or IBOVESPA), benchmark index of about 60 stocks that are traded on the B3 (Brasil Bolsa Balcão), which account for the majority of trading and market capitalization in the Brazilian stock market. The database, obtained from the website https://br.investing.com/, contains the opening and closing number of points the IBOVESPA had in each trading session from December 27 of 2000 to June 15 of 2020.
+During the investment simulations, the investors are provided, for each trading day of the considered period, with historic data of the *BOVESPA Index* (or IBOVESPA), benchmark index of about 60 stocks that are traded on the B3 (Brasil Bolsa Balcão), which account for the majority of trading and market capitalization in the Brazilian stock market. The database, obtained at https://br.investing.com/, contains the opening and closing number of points the IBOVESPA had in each trading session from December 27 of 2000 to June 15 of 2020.
 
 For the purposes of our simulations, the IBOVESPA is treated as an *exchange-traded fund* (ETF), i.e., an investment fund traded on stock exchanges, much like stocks. The price of each "IBOVESPA share" in a given instant is equal to the IBOVESPA divided by 100.
 
