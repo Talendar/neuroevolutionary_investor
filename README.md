@@ -56,9 +56,9 @@ The main component of each investor is its "brain". We give that name to the _**
    * *h = 0*: no action;
    * *h < 0*: action to sell |*h*| shares of IBOVESPA.
 
-to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
 
-to_do: actions the investor can take
+## Evolving neural networks
+to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
 
 
 ## Reproduction
