@@ -37,7 +37,15 @@ For the purposes of our simulations, the IBOVESPA is treated as an *exchange-tra
 
 
 ## The investor
-The main component of each investor (an individual of the population, represented by the class *Investor*) is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. 
+In each trading session, the investor (an individual of the population), represented by the class *Investor*, can decide to take one of the following actions:
+
+   * Buy *x* IBOVESPA shares;
+   * Do nothing;
+   * Sell *y* IBOVESPA shares.
+   
+
+
+The main component of each investor is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. 
 
 to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
 
