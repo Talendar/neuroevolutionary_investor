@@ -43,14 +43,16 @@ In each trading session, the investor (an individual of the population), represe
    * do nothing;
    * **sell** *y* IBOVESPA shares.
    
-The investor can take only one action in each trading day, during its end. In order to make a decision, the investor is provided, in each trading session, with the following informations:
+The investor can take only one action in each trading day, during its end. 
+
+In order to make a decision, the investor is provided, in each trading session, with the following informations:
 
    * the current amount of cash the investor has;
    * the number of shares the investor has;
-   * the average price the investor paid for each of his shares;
-   * the closing price of the "IBOVESPA shares" of the past *d* days, where *d* is a predefined number.
+   * the average price paid by the investor for his shares;
+   * the closing price of the "IBOVESPA shares" for the past *d* days, where *d* is a predefined number.
 
-The main component of each investor is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. 
+The main component of each investor is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. As input, the ANN takes a vector with the information above. It then outputs a real number *h*. 
 
 to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
 
