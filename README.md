@@ -52,7 +52,11 @@ In order to make a decision, the investor is provided, in each trading session, 
    * the average price paid by the investor for his shares;
    * the closing price of the "IBOVESPA shares" for the past *d* days, where *d* is a predefined number.
 
-The main component of each investor is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. As input, the ANN takes a vector with the information above. It then outputs a real number *h*. 
+The main component of each investor is its "brain". We give that name to the _**Artificial Neural Network**_ (*ANN*) responsible for making decisions for the investor. The ANN takes, as input, a vector with the information above. It then outputs a real number *h*. The program, then, rounds *h* to the nearest integer and interpret it as follows:
+
+   * *h > 0*: buy *h* shares of IBOVESPA;
+   * *h = 0*: do nothing;
+   * *h < 0*: sell |*h*| shares of IBOVESPA.
 
 to_do: the investor's brain; genetic algorithm + neural network = neuroevolution
 
