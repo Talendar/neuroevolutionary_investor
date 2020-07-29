@@ -25,7 +25,7 @@ To improve itself, the system uses concepts of **evolutionary computing**. Speci
             * Select one individual *i1* of the old population (without removing it).
             * Create a new individual *i2* similar to *i1*, but with small, random differences (mutation).
             * Add *i2* to the new population.
-    * Randomly select an individual (except for the one with the highest fitness) of the new population and kill it. 
+    * Randomly select an individual (except for the one with the highest fitness) from the new population and kill it. 
     * Randomly generate a new individual and add it to the new population.
     * Discard the old population and restart the loop considering the new population.
 
