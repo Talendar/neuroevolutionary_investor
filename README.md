@@ -78,10 +78,6 @@ The mutation rate used was mutable itself. It's inversely proportional to the in
 ## Results
 A population of 20 investors was considered. Each investor started with R$1000 of cash available to buy stocks. During the investment simulations, the investors had access to the past 30 days of closing prices of the "IBOVESPA shares". The population was "trained" with data from December 27 of 2000 to March 05 of 2015 (total of 3500 trading sessions). The evaluation was performed with data from March 06 of 2015 to June 12 of 2020 (total of 1345 trading sessions). 
 
-The performance, with the evaluation data (previously unknown by the individuals) of the top 3 investors of the population,
+The performance of the top 3 investors of the population, with the evaluation data (previously unknown to the individuals), is plotted below, along with the IBOVESPA's performance during the same period. 
 
-to_do: how did the investors handle crisis?
-
-to_do: general results
-
-<p align="center"> <img src="./Figure_1.png"width="1000" height="600"> </p> 
+<p align="center"> <img src="./fig_1.png"width="1000" height="600"> </p> 
