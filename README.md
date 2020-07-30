@@ -60,9 +60,9 @@ The main component of each investor is his "brain". We give that name to the _**
 
 
 ## Evolving neural networks
-The process of generating neural networks with evolutionary algorithms (a genetic algorithm, in this project's case) is called _**neuroevolution**_ (hence the name of the project).
+As we've seen, the reproduction step occurs after each generation. The individuals with the best fitness are selected from the old population and used to generate individuals for a new population (the next generation). In the context of this project, this means that during the reproduction step the neural networks of the best investors of the past generation are selected and used to generate the neural networks of the new generation. The new neural networks have the same topology of their ancestors, but slightly different weights.
 
-to_do: weights and biases of the networks
+Our goal, by changing the weights of the ANNs in the population, is to achieve, after each generation, individuals with a higher fitness. The process of generating neural networks with evolutionary algorithms (a genetic algorithm, in our case) is called _**neuroevolution**_ (hence the name of the project).
 
 
 ## Reproduction
