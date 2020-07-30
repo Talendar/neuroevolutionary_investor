@@ -72,7 +72,7 @@ In the reward-based approach, on the other hand, the probability of selecting an
 
 The reward-based reproduction was the one that yielded the best results. In both cases, the best individual was preserved between generations. In addition, after the reproduction stage, one individual of the new population was randomly killed and replaced by a new randomly generated individual. This strategy, called *predation* (Simões & Barrone, 2002), was used to avoid local optimums, adding new "genetic material" to the population.
 
-to_do: a mutable mutation rate (the mutation rate gets higher when the population hasn't been changing much in the past few epochs).
+The mutation rate used was mutable itself. It's inversely proportional to the increase of the population fitness in the last generations. This means that when the population's fitness hasn't increased much (or has decreased) over a given number of generations, the mutation rate is increased, forcing the population to change more quickly. On the other hand, when the population fitness has been increasing rapidly and steadily, the mutation rate is lowered, in order to keep the evolution process in the "current tracks".
 
 
 ## Results
