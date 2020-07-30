@@ -68,9 +68,9 @@ Our goal, by changing the weights of the ANNs in the population, is to achieve, 
 ## Reproduction
 Two different reproduction techniques were tested in this project: ***elitism*** and ***reward-based selection***. The elitist approach selects the individual with the best fitness and mates him with all the other individuals in the population. The result of the mating of two individuals is a new neural network whose weights are the sum of its parents' weights divided by 2 and multiplied by a *mutation rate*.
 
-In the reward-based approach, on the other hand, the probability of selecting an individual is proportional to its fitness. Given a sorted zero-indexed list with *n* individuals, where the worst-fitness individual occupies the index 0 and the best-fitness individual occupies the index *n - 1*, the chance of the individual in the index *i* to be picked is given by 2<sup>*i*</sup> divided by the sum of the whole distribution. 
+In the reward-based approach, on the other hand, the probability of selecting an individual is proportional to its fitness. Given a sorted zero-indexed list with *n* individuals, where the worst-fitness individual occupies the index 0 and the best-fitness individual occupies the index *n - 1*, the chance of the individual in the index *i* to be picked is given by 2<sup>*i*</sup> divided by the sum of the whole distribution. When selected, the weights of the individual's neural network are multiplied by a mutation rate and used to generate a new ANN, that will belong to an individual of the new generation.
 
-to_do: why randomly kill one individual? The problem of a bad starting point in the search space.
+The reward-based reproduction was the one that yielded the best results. In both cases, the best individual was preserved between generations. In addition, after the reproduction stage, one individual of the new population was randomly killed and replaced by a new randomly generated individual. This strategy, called *predation* (Simões & Barrone, 2002), was used to avoid local optimums, adding new "genetic material" to the population.
 
 to_do: a mutable mutation rate (the mutation rate gets higher when the population hasn't been changing much in the past few epochs).
 
