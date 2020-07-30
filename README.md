@@ -80,4 +80,4 @@ A population of 20 investors was considered. Each investor started with R$1000 o
 
 The performance of the top 3 investors of the population, with the evaluation data (previously unknown to the individuals), is plotted below, along with the IBOVESPA's performance during the same period. 
 
-<p align="center"> <img src="./fig_1.png"width="840" height="446"> </p> 
+<p align="center"> <img src="./fig_1.png"width="1000" height="600"> </p> 
