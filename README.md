@@ -1,5 +1,5 @@
 # Neuroevolutionary Investor
-Neuroevolution-based system that simulates investments in the stock market, based on the BOVESPA index. Final project of the course _SSC0713 - Evolutionary systems applyied to robotics_.
+Neuroevolution-based system that simulates investments in the stock market based on the BOVESPA index. Final project of the course _SSC0713 - Evolutionary systems applyied to robotics_.
 
 VIDEO: work in progress
 
