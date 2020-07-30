@@ -33,7 +33,7 @@ def static_plot(best_investors, ibov_var):
     plt.show()
 
 
-def dynamic_plot(investor_history, ibov_var, print_ops, max_num_ops=5):
+def dynamic_plot(investor_history, ibov_var, print_ops, max_num_ops=7):
     """ Dynamically plots, over time, the performance of IBOVESPA and on investor.
 
     :param investor_history: performance history of the investor.
@@ -75,6 +75,7 @@ def dynamic_plot(investor_history, ibov_var, print_ops, max_num_ops=5):
     ydata_ibov = []
 
     pc_ann_inv = pc_ann_ibov = None
+    op_points = []
     op_annotations = []
 
     for x in range(len(ibov_var)):
@@ -109,13 +110,15 @@ def dynamic_plot(investor_history, ibov_var, print_ops, max_num_ops=5):
         # op annotation
         if print_ops and investor_history[1][x][1] != 0:
             color = "g" if investor_history[1][x][0] == "BUY" else "r"
-            ax.plot([xdata[-1]], [ydata_inv[-1]], marker='o', markersize=5, color=color)
+            p, = ax.plot([xdata[-1]], [ydata_inv[-1]], marker='o', markersize=5, color=color)
+            op_points.append(p)
             op_annotations.append(
                 ax.annotate("%d" % investor_history[1][x][1],
                             xy=(xdata[-1], ydata_inv[-1]), xytext=(xdata[-1] - 0.25, ydata_inv[-1] - 0.25),
                             color=color, weight="bold", fontsize=8, arrowprops={"arrowstyle": "->"}))
 
             if len(op_annotations) > max_num_ops:
+                op_points.pop(0).remove()
                 op_annotations.pop(0).remove()  # remove the oldest annotation
 
         # draw and delay
