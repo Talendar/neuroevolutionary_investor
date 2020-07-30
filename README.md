@@ -66,7 +66,9 @@ Our goal, by changing the weights of the ANNs in the population, is to achieve, 
 
 
 ## Reproduction
-Two different reproduction techniques were tested in this project: ***elitism*** and ***reward-based reproduction***. The elitist approach selects the individual with the best fitness and mates him with all the other individuals in the population. The result of mating two individuals is a new neural networks whose weights are the sum of its parents weights divided by 2 and multiplied by a *mutation rate*.
+Two different reproduction techniques were tested in this project: ***elitism*** and ***reward-based selection***. The elitist approach selects the individual with the best fitness and mates him with all the other individuals in the population. The result of the mating of two individuals is a new neural network whose weights are the sum of its parents' weights divided by 2 and multiplied by a *mutation rate*.
+
+In the reward-based approach, on the other hand, the probability of selecting an individual is proportional to its fitness. Given a sorted zero-indexed list with *n* individuals, where the worst-fitness individual occupies the index 0 and the best-fitness individual occupies the index *n - 1*, the chance of the individual in the index *i* to be picked is given by 2<sup>*i*</sup> divided by the sum of the whole distribution. 
 
 to_do: why randomly kill one individual? The problem of a bad starting point in the search space.
 
